@@ -68,7 +68,7 @@ export function HeroSection({
 
       {/* Logo */}
       <motion.div
-        className="absolute top-10 left-1/2 -translate-x-1/2 z-20"
+        className="absolute top-6 left-1/2 -translate-x-1/2 z-20"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.1 }}
@@ -76,14 +76,14 @@ export function HeroSection({
         <img
           src={MALAMA_LOGO_URL}
           alt="Mālama Labs"
-          width="220"
-          height="220"
+          width="180"
+          height="180"
           className="object-contain"
         />
       </motion.div>
 
       {/* Main content */}
-      <div className="relative z-10 text-center max-w-5xl mx-auto px-6 pt-32 pb-20">
+      <div className="relative z-10 text-center max-w-5xl mx-auto px-6 pt-48 pb-20">
 
         {/* Live proof badge */}
         <motion.div
