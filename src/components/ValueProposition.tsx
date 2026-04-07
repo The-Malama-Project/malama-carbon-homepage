@@ -1,116 +1,114 @@
+import React from 'react';
 import { motion } from 'motion/react';
 import { Button } from './ui/button';
-import { ImageWithFallback } from './figma/ImageWithFallback';
-import { Sprout, Network } from 'lucide-react';
+import { ShieldCheck, Zap, Globe, ArrowRight } from 'lucide-react';
 
 interface ValuePropositionProps {
-  onExplorePlatform: () => void;
+  onExplorePlatform?: () => void;
 }
+
+const PILLARS = [
+  {
+    icon: ShieldCheck,
+    color: '#4CAF50',
+    title: 'Hardware-Signed at Source',
+    body: 'Every data point originates from a device with a burned-in DID and ECDSA private key. The signature is created before the data leaves the sensor — not in software, not in the cloud. Tamper-evidence is physical, not assumed.',
+    contrast: 'Traditional MRV: manual logs, episodic audits, software attestation only.',
+  },
+  {
+    icon: Zap,
+    color: '#00ACC1',
+    title: 'Continuous, Not Episodic',
+    body: 'SaveCards stream hourly to Cardano mainnet. Verification is not a 12-month audit cycle — it is a live data feed. LCO₂ pre-finance instruments issue against the stream. VCO₂ compliance credits mint when thresholds are met.',
+    contrast: 'Traditional MRV: $20K–$50K per project, 18–24 month credit cycle.',
+  },
+  {
+    icon: Globe,
+    color: '#A5D6A7',
+    title: 'One Node. Six Markets.',
+    body: 'A single Genesis 300 field deployment simultaneously generates verified data for carbon accounting, biodiversity attestation, soil health, water quality, grid emissions, and prediction market settlement. Infrastructure cost is shared across all revenue streams.',
+    contrast: 'Competitors: single-market tools that require separate deployments per use case.',
+  },
+];
 
 export function ValueProposition({ onExplorePlatform }: ValuePropositionProps) {
   return (
-    <section className="py-20 px-6 bg-[rgba(190,203,187,0.45)]">
-      <div className="max-w-6xl mx-auto">
-        <motion.div 
+    <section className="py-24 px-6 bg-white">
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header */}
+        <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-5xl md:text-6xl mb-6 text-primary">
+          <span className="inline-block text-xs font-bold tracking-widest text-[#2E7D32] uppercase mb-4 border border-[#2E7D32]/30 rounded-full px-4 py-1">
+            The Thesis
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#0A1A0F] mb-6" style={{ fontFamily: 'Georgia, serif' }}>
             From Planet to Protocol
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            We align with trusted standards to pre-certify any durable carbon methodology across major certification platforms. Our Universal dMRV and Climate Intelligence Network automate credit creation, monitoring, and reporting—so projects unlock funding earlier and scale with confidence.
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Climate markets have had a data provenance problem for decades. Mālama's answer
+            is cryptographically signed, immutable, on-chain environmental data — the trust
+            layer that makes real-world impact investable.
           </p>
         </motion.div>
-        
-        <div className="grid md:grid-cols-3 gap-8 items-center">
-          {/* Land & Ocean Stewardship */}
-          <motion.div 
-            className="relative"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <div className="relative overflow-hidden rounded-3xl bg-accent/50 p-6">
-              <div className="flex items-center justify-center mb-6">
-                <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center">
-                  <Sprout className="w-10 h-10 text-primary-foreground" />
-                </div>
-              </div>
-              <h3 className="text-xl mb-4 text-center text-primary font-bold">Land & Ocean Stewardship</h3>
-              <p className="text-center text-muted-foreground text-sm">
-                Farmers, foresters, and coastal managers adopt regenerative practices—from soil carbon and reforestation to seaweed and mangroves—creating durable sequestration opportunities while gaining early offtake financing.
-              </p>
-              <div className="absolute -top-4 -right-4 w-32 h-32 bg-secondary/20 rounded-full blur-2xl"></div>
-              <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl"></div>
-            </div>
-          </motion.div>
 
-          {/* Engineered Solutions */}
-          <motion.div 
-            className="relative"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            viewport={{ once: true }}
-          >
-            <div className="relative overflow-hidden rounded-3xl bg-secondary/10 p-6">
-              <div className="flex items-center justify-center mb-6">
-                <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center">
-                  <Network className="w-10 h-10 text-white" />
+        {/* Three pillars */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {PILLARS.map(({ icon: Icon, color, title, body, contrast }, i) => (
+            <motion.div
+              key={title}
+              className="bg-[#F1F8E9] rounded-2xl overflow-hidden border border-[#C8E6C9]"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: i * 0.15 }}
+              viewport={{ once: true }}
+            >
+              {/* Top accent */}
+              <div className="h-1 w-full" style={{ backgroundColor: color }} />
+              <div className="p-7">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center mb-5"
+                  style={{ backgroundColor: color + '22' }}
+                >
+                  <Icon className="w-5 h-5" style={{ color }} />
+                </div>
+                <h3 className="text-xl font-bold text-[#0A1A0F] mb-3">{title}</h3>
+                <p className="text-gray-700 text-sm leading-relaxed mb-5">{body}</p>
+                <div className="bg-white rounded-lg p-3 border border-[#C8E6C9]">
+                  <p className="text-xs text-gray-500 italic">{contrast}</p>
                 </div>
               </div>
-              <h3 className="text-xl mb-4 text-center text-secondary font-bold">Engineered Solutions</h3>
-              <p className="text-center text-muted-foreground text-sm">
-                Projects deploying biochar, enhanced weathering, or direct air capture can connect into our system for automated monitoring and pre-certification, accelerating investment readiness.
-              </p>
-              <div className="absolute -top-4 -left-4 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-secondary/20 rounded-full blur-2xl"></div>
-            </div>
-          </motion.div>
-          
-          {/* Digital Verification */}
-          <motion.div 
-            className="relative"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <div className="relative overflow-hidden rounded-3xl bg-primary/10 p-6">
-              <div className="flex items-center justify-center mb-6">
-                <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center">
-                  <Network className="w-10 h-10 text-white" />
-                </div>
-              </div>
-              <h3 className="text-xl mb-4 text-center text-primary font-bold">Digital Verification</h3>
-              <p className="text-center text-muted-foreground text-sm">
-                AI-powered sensors, satellite data, and blockchain records ensure immutable tracking—from carbon capture to credit issuance—building trust with investors, buyers, and regulators.
-              </p>
-              <div className="absolute -top-4 -left-4 w-32 h-32 bg-secondary/20 rounded-full blur-2xl"></div>
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl"></div>
-            </div>
-          </motion.div>
+            </motion.div>
+          ))}
         </div>
-        
-        <motion.div 
-          className="text-center mt-12"
+
+        {/* Bottom proof bar */}
+        <motion.div
+          className="bg-[#0A1A0F] rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <Button 
-            variant="outline" 
-            size="lg" 
+          <div>
+            <p className="text-[#4CAF50] text-sm font-bold tracking-widest uppercase mb-1">Live Proof</p>
+            <p className="text-white text-xl font-bold" style={{ fontFamily: 'Georgia, serif' }}>
+              Genesis 300 node op5pro-field-a is emitting hourly SaveCards on Cardano mainnet right now.
+            </p>
+            <p className="text-[#81C784] text-sm mt-1">
+              Idaho City ERW site · ECDSA-signed · CIP-25/CIP-68 · Live since early 2025
+            </p>
+          </div>
+          <Button
             onClick={onExplorePlatform}
-            className="hover:scale-105 transition-transform duration-300"
+            className="bg-[#4CAF50] text-[#0A1A0F] hover:bg-[#388E3C] font-bold whitespace-nowrap flex items-center gap-2 shrink-0"
           >
-            Learn More
+            Explore the Platform <ArrowRight className="w-4 h-4" />
           </Button>
         </motion.div>
       </div>
