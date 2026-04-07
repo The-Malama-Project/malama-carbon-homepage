@@ -1,5 +1,7 @@
+import React from 'react';
 import { motion } from 'motion/react';
 import { Button } from './ui/button';
+import { ArrowRight, Users, Code2, ShoppingCart, Handshake } from 'lucide-react';
 
 interface ClosingCTAProps {
   onStartProject?: () => void;
@@ -8,162 +10,158 @@ interface ClosingCTAProps {
   onHowItWorks?: () => void;
 }
 
-export function ClosingCTA({ onStartProject, onLandSteward, onExplorePlatform, onHowItWorks }: ClosingCTAProps) {
-  return (
-    <section className="relative py-20 px-6 overflow-hidden">
-      {/* Background Image with Blue/Aqua Gradient Overlay */}
-      <div 
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(16, 185, 129, 0.75) 50%, rgba(6, 182, 212, 0.8) 100%), url('https://images.unsplash.com/photo-1546064125-11154220541f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2b2xjYW5vJTIwbGFuZHNjYXBlJTIwaGF3YWlpfGVufDF8fHx8MTc1NjI3MjkwMXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
-        }}
-      />
-      
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 z-1">
-        <motion.div 
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ 
-            duration: 8, 
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-cyan-400/10 rounded-full blur-3xl"
-          animate={{ 
-            scale: [1.2, 1, 1.2],
-            opacity: [0.5, 0.3, 0.5]
-          }}
-          transition={{ 
-            duration: 6, 
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute top-1/2 right-1/3 w-32 h-32 bg-emerald-400/8 rounded-full blur-2xl"
-          animate={{ 
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ 
-            duration: 10, 
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-      </div>
-      
-      <div className="relative z-10 max-w-6xl mx-auto text-center">
-        <motion.h2 
-          className="text-5xl md:text-6xl lg:text-7xl mb-6 text-white font-medium"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-        >
-          Hawaiʻi Grown, Planet Scale
-        </motion.h2>
-        
-        <motion.p 
-          className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          Join us in transforming natural climate solutions with technology that serves the Earth.
-        </motion.p>
+const PATHS = [
+  {
+    icon: Users,
+    color: '#4CAF50',
+    audience: 'Project Developers',
+    headline: 'Earn from verified field data',
+    body: 'Deploy a Genesis 300 node on your land. Stream signed environmental data. Receive LCO₂ pre-finance in 90 days, convert to VCO₂ at verification. Sub-$2/tCO₂e MRV cost vs. $20K–$50K traditional.',
+    cta: 'Start Your Project',
+    onClick: 'startProject' as const,
+  },
+  {
+    icon: Code2,
+    color: '#00ACC1',
+    audience: 'Technology Builders',
+    headline: 'Build on the trust layer',
+    body: 'Access the dMRV API, SaveCard data feeds, and Cardano mainnet oracle endpoints. Build climate fintech applications on top of hardware-verified environmental data.',
+    cta: 'Explore the Platform',
+    onClick: 'explorePlatform' as const,
+  },
+  {
+    icon: ShoppingCart,
+    color: '#A5D6A7',
+    audience: 'Corporate Buyers',
+    headline: 'Purchase with full data provenance',
+    body: 'Every credit carries a cryptographic chain of custody from sensor to chain. Hardware-signed, registry-ready, audit-grade. LCO₂ available now. VCO₂ at verification.',
+    cta: 'How It Works',
+    onClick: 'howItWorks' as const,
+  },
+  {
+    icon: Handshake,
+    color: '#81C784',
+    audience: 'Partners & Registries',
+    headline: 'Integrate the data layer',
+    body: 'Connect Verra, Gold Standard, Isometric, Puro.earth, or ACR workflows to continuous, hardware-anchored MRV data streams. Reduce audit overhead. Improve credit integrity.',
+    cta: 'Get in Touch',
+    onClick: 'startProject' as const,
+  },
+];
 
-        {/* Cultural Section */}
-        <motion.div 
-          className="mb-12 max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
+type OnClickKey = 'startProject' | 'explorePlatform' | 'howItWorks';
+
+export function ClosingCTA({
+  onStartProject,
+  onLandSteward,
+  onExplorePlatform,
+  onHowItWorks,
+}: ClosingCTAProps) {
+  const handlers: Record<OnClickKey, (() => void) | undefined> = {
+    startProject: onStartProject,
+    explorePlatform: onExplorePlatform,
+    howItWorks: onHowItWorks,
+  };
+
+  return (
+    <section className="py-24 px-6 bg-white">
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-            <h3 className="text-2xl md:text-3xl font-semibold mb-6 text-white">
-              Rooted in Community
-            </h3>
-            
-            <div className="space-y-6 text-white/90">
-              <p className="text-lg leading-relaxed">
-                <strong className="text-white">Mālama</strong> means to care for, protect, and serve. Our system integrates indigenous knowledge and local land stewards, ensuring that benefits flow to the people who protect ecosystems.
-              </p>
-              
-              <div className="bg-white/5 rounded-xl p-6 border-l-4 border-white/30">
-                <blockquote className="text-xl md:text-2xl font-medium italic text-white leading-relaxed">
-                  "We trust the data, and we trust the communities who create it."
-                </blockquote>
-              </div>
-              
-              <p className="text-lg leading-relaxed">
-                By combining traditional Hawaiian land stewardship practices with cutting-edge technology, we create a bridge between ancient wisdom and modern climate solutions.
-              </p>
-            </div>
-          </div>
-        </motion.div>
-        
-        <motion.div 
-          className="flex flex-wrap gap-4 justify-center items-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
-          <Button 
-            size="lg" 
-            onClick={onStartProject}
-            className="bg-white text-primary hover:bg-white/90 hover:shadow-lg transition-all duration-300 hover:scale-105"
-          >
-            Start Your Project
-          </Button>
-          <Button 
-            variant="outline" 
-            size="lg"
-            onClick={onLandSteward}
-            className="border-white text-[rgba(0,0,0,1)] hover:bg-white hover:text-primary transition-all duration-300 hover:shadow-lg hover:scale-105"
-          >
-            For Project Developers
-          </Button>
-          <Button 
-            variant="outline" 
-            size="lg"
-            onClick={onExplorePlatform}
-            className="border-white text-[rgba(0,0,0,1)] hover:bg-white hover:text-primary transition-all duration-300 hover:shadow-lg hover:scale-105"
-          >
-            Explore the Platform
-          </Button>
-          <Button 
-            variant="outline" 
-            size="lg"
-            onClick={onHowItWorks}
-            className="border-white text-[rgba(0,0,0,1)] hover:bg-white hover:text-primary transition-all duration-300 hover:shadow-lg hover:scale-105"
-          >
-            How It Works
-          </Button>
-        </motion.div>
-        
-        <motion.div 
-          className="mt-12 text-white/70"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <p className="text-sm">
-            Ready to scale carbon removal? Let's build the future together.
+          <span className="inline-block text-xs font-bold tracking-widest text-[#2E7D32] uppercase mb-4 border border-[#2E7D32]/30 rounded-full px-4 py-1">
+            Choose Your Path
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#0A1A0F] mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+            Get started with Mālama Labs
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Select your role in the climate data ecosystem.
           </p>
+        </motion.div>
+
+        {/* Audience cards */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          {PATHS.map(({ icon: Icon, color, audience, headline, body, cta, onClick }, i) => (
+            <motion.div
+              key={audience}
+              className="bg-[#F9FBF9] rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: i * 0.12 }}
+              viewport={{ once: true }}
+            >
+              <div className="h-1 w-full" style={{ backgroundColor: color }} />
+              <div className="p-6 flex flex-col flex-1">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center mb-4"
+                  style={{ backgroundColor: color + '22' }}
+                >
+                  <Icon className="w-5 h-5" style={{ color }} />
+                </div>
+                <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color }}>
+                  {audience}
+                </p>
+                <h3 className="text-base font-bold text-[#0A1A0F] mb-3">{headline}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed flex-1">{body}</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-5 border-current text-[#0A1A0F] hover:bg-[#F1F8E9] flex items-center gap-1 w-full justify-center"
+                  style={{ borderColor: color }}
+                  onClick={handlers[onClick]}
+                >
+                  {cta} <ArrowRight className="w-3 h-3" />
+                </Button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Final closing banner */}
+        <motion.div
+          className="bg-[#0A1A0F] rounded-2xl p-10 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <p className="text-[#4CAF50] text-sm font-bold tracking-widest uppercase mb-3">Hawai'i Grown. Planet Scale.</p>
+          <h3
+            className="text-3xl md:text-4xl font-bold text-white mb-4 max-w-2xl mx-auto leading-tight"
+            style={{ fontFamily: 'Georgia, serif' }}
+          >
+            The hardware is in the ground.<br />
+            The data is on-chain.<br />
+            <span className="text-[#4CAF50]">The trust layer for climate markets is being built now.</span>
+          </h3>
+          <p className="text-[#81C784] text-sm mb-8 max-w-xl mx-auto">
+            Mālama means to care for, protect, and serve. Our system combines indigenous land stewardship
+            with hardware-anchored cryptographic verification — because real care requires real proof.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Button
+              size="lg"
+              onClick={onStartProject}
+              className="bg-[#4CAF50] text-[#0A1A0F] hover:bg-[#388E3C] font-bold px-8"
+            >
+              Start Your Project
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={onExplorePlatform}
+              className="border-[#4CAF50]/50 text-white hover:bg-[#1B5E20]/30"
+            >
+              Explore the Platform
+            </Button>
+          </div>
         </motion.div>
       </div>
     </section>
